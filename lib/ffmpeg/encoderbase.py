@@ -302,13 +302,19 @@ class BaseEncoderTest(slash.Test, BaseFormatMapper):
     # comparision functions.  However, since we are exploiting the "inline"
     # metric feature (i.e. setting metric.actual directly), the internal
     # comparison functions will be bypassed.
+    slash.logbook.info(f'metric = metrics2.factory.create({vars(self)})')
     metric = metrics2.factory.create(**vars(self))
+    slash.logger.info(f'metric = {metric }')
     metric.update(
       filetrue  = self.encoder.source,
       filecoded = self.encoder.encoded,
       filetest  = self.decoder.decoded,
       frames    = self.frames,
     )
+    slash.logger.info('After metric.update')
+    slash.logger.info(f'metric = {metric}')
+    slash.logger.info(f'metric.actual = parse_psnr_stats(self.decoder.statsfile, self.frames)')
+    slash.logger.info(f'metric.actual = parse_psnr_stats({self.decoder.statsfile}, {self.frames})')
     metric.actual = parse_psnr_stats(self.decoder.statsfile, self.frames)
 
     metric.check()

@@ -20,7 +20,8 @@ from .util import RawFileFrameReader, RawMetricAggregator, MetricWithDataRange
 from . import factory
 from ..codecs import Codec
 from ..formats import PixelFormat
-
+import slash
+info = slash.logger.info
 trend_models = dict(
   power   = lambda x, a, k: a*x**k,
   powern  = lambda x, a, k: a*x**-k,
@@ -32,7 +33,10 @@ trend_models = dict(
 
 @timefn("psnr:calculate")
 def calculate(filetrue, filetest, width, height, frames, fmttrue, fmttest):
+  info('calculate(filetrue, filetest, width, height, frames, fmttrue, fmttest)')
+  info(f'calculate({filetrue}, {filetest}, {width}, {height}, {frames}, {fmttrue}, {fmttest})')
   bitdepth = PixelFormat(fmttrue).bitdepth
+  info(f'bitdepth = {bitdepth}')
   assert PixelFormat(fmttest).bitdepth == bitdepth
 
   return RawMetricAggregator(min).calculate(

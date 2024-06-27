@@ -9,9 +9,13 @@ import os
 
 from ..common import get_media, memoize
 from ..framereader import FrameReaders
+import slash
+info = slash.logger.info
 
 class RawFileFrameReader:
   def __init__(self, filename, width, height, nframes, fourcc):
+    info('RawFileFrameReader.__init__(self, filename, width, height, nframes, fourcc)')
+    info(f'RawFileFrameReader.__init__(self, {filename}, {width}, {height}, {nframes}, {fourcc})')
     self.filename = filename
     self.width    = width
     self.height   = height

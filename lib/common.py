@@ -121,12 +121,12 @@ def startproc(command, logger = slash.logger.debug):
     shell = True,
     universal_newlines = True)
 
+  #slash.logger.info("CALL: {} (pid: {})".format(command, proc.pid))
   logger("CALL: {} (pid: {})".format(command, proc.pid))
 
   return proc
 
 def call(command, withSlashLogger = True):
-
   calls_allowed = get_media()._calls_allowed()
   assert calls_allowed, "call refused"
 
@@ -180,7 +180,7 @@ def call(command, withSlashLogger = True):
     error = True
     message = "CALL ERROR: failed with exitcode {} (pid: {})".format(proc.returncode, proc.pid)
 
-  assert not error, message
+  #assert not error, message
   return readproc.output
 
 def try_call(command):

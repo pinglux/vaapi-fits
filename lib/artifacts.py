@@ -46,7 +46,7 @@ class Artifacts():
     filename = f"{self.__id(scope)}_{len(artifacts)}.{ext}"
     absfile = os.path.join(result.get_log_dir(), filename)
     artifacts.append(absfile)
-    slash.add_critical_cleanup(self.purge, scope = scope, args = (absfile, scope))
+    #slash.add_critical_cleanup(self.purge, scope = scope, args = (absfile, scope))
     return absfile
 
 class MediaAssets:
@@ -75,9 +75,18 @@ class MediaAssets:
     from .codecs import Codec
     if vars(test).get("scodec", Codec.RAW) is Codec.RAW:
       return test.source
-
+    slash.logger.debug(f'Need to convert to RAW, Source: {test.source}, format: {test.format}')
     entry = self._decoded[(test.source, test.format)]
+    slash.logger.info(f'entry = self._decoded[({test.source}, {test.format})]')
+    slash.logger.info(f'self._decoded: {self._decoded}')
     if entry["decoded"] is None:
+      slash.logger.info('entry[decoded] is None')
+      slash.logger.info('test.DecoderClass('
+                        f'scope = {Scope.SESSION},'
+                        f'frames = {entry["frames"]},'
+                        f'format = {test.format},'
+                        f'source = {test.source},' + str(kwargs)
+                        )
       decoder = test.DecoderClass(
         scope = Scope.SESSION,
         frames = entry["frames"],

@@ -75,12 +75,18 @@ class Decoder(PropertyHandler, BaseFormatMapper):
 
     mtype = self.props.get("metric", dict()).get("type", None)
     if mtype in ["ssim", "psnr"]:
+      slash.logger.info('call ffprob to get fps')
       fps = ffmpeg_probe_fps(self.ossource)
 
       if vars(self).get("_statsfile", None) is not None:
         get_media().artifacts.purge(self._statsfile)
       self._statsfile = get_media().artifacts.reserve(mtype)
-
+      slash.logger.info(f'self._statsfile: {self._statsfile}')
+      slash.logger.info(f'self.osstatsfile: {self.osstatsfile}')
+      slash.logger.info(f'self.ffdecoder: {self.ffdecoder}')
+      slash.logger.info(f'self.osreference: {self.osreference}')
+      slash.logger.info(f'mtype: {mtype}')
+      slash.logger.info(f'self.refseek: {self.refseek}')
       return call(
         f"{exe2os('ffmpeg')} -v verbose {self.hwinit}"
         f" {self.ffdecoder} -r:v {fps} -i {self.ossource}"
